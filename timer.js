@@ -11,6 +11,7 @@ const timer = () => {
 
     next.addEventListener('click', () => {
         clearAlarm();
+        stopTimer();
     });
 
 
@@ -22,9 +23,14 @@ const timer = () => {
         }, 1000)
     }
 
+    function stopTimer() {
+        clearInterval(interval);
+        interval = null;
+    }
+
     function createAlarm(alarmName) {
         chrome.alarms.create(alarmName, {
-            delayInMinutes: 0.5
+            delayInMinutes: 0.5166667
         });
     }
 
@@ -44,7 +50,16 @@ const timer = () => {
 
     function getRemainingSeconds(scheduledTime) {
         var date = new Date();
-        console.log(scheduledTime - date);
+        if((scheduledTime - date) < 1000){
+            stopTimer();
+        }
+        var remainingTime = insertDec(scheduledTime - date);
+        console.log(remainingTime);
+        // console.log(time - date);
+    }
+
+    function insertDec(num) {
+        return (num/1000);
     }
 }
 
