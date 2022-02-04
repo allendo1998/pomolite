@@ -2,21 +2,29 @@ const timer = () => {
     var start = document.getElementById("start");
     var next = document.getElementById("next");
     var alarmName = "pomTime";
+    var interval = null;
 
     start.addEventListener('click',() => {
-        console.log("pressed");
         createAlarm(alarmName);
+        startTimer();
     });
 
     next.addEventListener('click', () => {
-        // clearAlarm();
-        console.log(loggetAlarm());
+        clearAlarm();
     });
 
 
+
+
+    function startTimer() {
+        interval = setInterval(() =>{
+            checkAlarm();
+        }, 1000)
+    }
+
     function createAlarm(alarmName) {
         chrome.alarms.create(alarmName, {
-            delayInMinutes: 0.1
+            delayInMinutes: 0.5
         });
     }
 
@@ -24,10 +32,13 @@ const timer = () => {
         chrome.alarms.clear(alarmName);
     }
 
-    function getAlarm(){
+    function checkAlarm(){
         chrome.alarms.getAll(function(alarms) {
-            // console.log(alarms[0]['scheduledTime']);
-            return alarms[0];
+            if(alarms[0] != null) {
+                getRemainingSeconds(alarms[0]['scheduledTime']);
+            } else {
+                console.log("no alarms set");
+            }
         });
     }
 
@@ -35,8 +46,6 @@ const timer = () => {
         var date = new Date();
         console.log(scheduledTime - date);
     }
-
-
 }
 
 timer();
