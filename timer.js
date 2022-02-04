@@ -14,9 +14,6 @@ const timer = () => {
         stopTimer();
     });
 
-
-
-
     function startTimer() {
         interval = setInterval(() =>{
             checkAlarm();
@@ -30,7 +27,7 @@ const timer = () => {
 
     function createAlarm(alarmName) {
         chrome.alarms.create(alarmName, {
-            delayInMinutes: 0.5166667
+            delayInMinutes: 0.1
         });
     }
 
@@ -53,9 +50,16 @@ const timer = () => {
         if((scheduledTime - date) < 1000){
             stopTimer();
         }
-        var remainingTime = insertDec(scheduledTime - date);
-        console.log(remainingTime);
-        // console.log(time - date);
+        var remainingTime = Math.ceil(insertDec(scheduledTime - date));
+        console.log(getMinutes(remainingTime).toString().padStart(2, "0") + ":" + getSeconds(remainingTime).toString().padStart(2, "0"));
+    }
+
+    function getMinutes(time) {
+        return Math.floor(time / 60);
+    }
+
+    function getSeconds(time) {
+        return time % 60;
     }
 
     function insertDec(num) {
