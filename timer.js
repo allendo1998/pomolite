@@ -5,16 +5,16 @@ const timer = () => {
 
     start.addEventListener('click',() => {
         console.log("pressed");
-        createAlarm();
+        createAlarm(alarmName);
     });
 
     next.addEventListener('click', () => {
         // clearAlarm();
-        getAlarm();
+        console.log(loggetAlarm());
     });
 
 
-    function createAlarm() {
+    function createAlarm(alarmName) {
         chrome.alarms.create(alarmName, {
             delayInMinutes: 0.1
         });
@@ -26,8 +26,14 @@ const timer = () => {
 
     function getAlarm(){
         chrome.alarms.getAll(function(alarms) {
-            console.log(alarms[0]);
+            // console.log(alarms[0]['scheduledTime']);
+            return alarms[0];
         });
+    }
+
+    function getRemainingSeconds(scheduledTime) {
+        var date = new Date();
+        console.log(scheduledTime - date);
     }
 
 
